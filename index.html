@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Developer Journey</title>
+
+    <style>
+        /* =========================
+           RESET & GLOBAL STYLES
+        ========================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* =========================
+           HEADER
+        ========================== */
+
+        header {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+        header h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+        }
+
+        /* =========================
+           NAVIGATION
+        ========================== */
+
+        nav {
+            background: #0f172a;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #e2e8f0;
+            padding: 16px 18px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* =========================
+           MAIN LAYOUT
+        ========================== */
+
+        .container {
+            width: min(1200px, 92%);
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 25px;
+        }
+
+        main {
+            min-width: 0;
+        }
+          .btn {
+            display: inline-block;
+            background-color: #B14A36;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+            align-self: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .btn:hover {
+            background-color: #8C0902;
+        }
+        section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        section h2 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 8px;
+        }
+
+        section h3 {
+            color: #2563eb;
+            margin-bottom: 8px;
+        }
+
+        section p {
+            margin-bottom: 15px;
+        }
+
+        /* =========================
+           CARDS
+        ========================== */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #f8fafc;
+            padding: 20px;
+            border-left: 4px solid #2563eb;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================== */
+
+        aside {
+            background: #1e293b;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            height: fit-content;
+            position: sticky;
+            top: 85px;
+        }
+
+        aside h2 {
+            margin-bottom: 20px;
+            color: #60a5fa;
+        }
+
+        .sidebar-box {
+            background: #334155;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .sidebar-box h3 {
+            color: #93c5fd;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-box ul {
+            list-style: none;
+        }
+
+        .sidebar-box li {
+            padding: 5px 0;
+        }
+
+        /* =========================
+           BUTTON
+        ========================== */
+
+        .button {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+/* =========================
+   DATABASES SECTION
+========================= */
+
+#databases {
+    padding: 70px 20px;
+}
+
+
+/* Section Header */
+
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-header h2 {
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+
+.section-header p {
+    max-width: 650px;
+    margin: 0 auto;
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   DATABASE CARD
+========================= */
+
+.database-card {
+    width: 100%;
+    max-width: 700px;
+
+    margin: 0 auto;
+    padding: 30px;
+
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 16px;
+
+    text-align: center;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+    transition: transform 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+.database-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Card Text */
+
+.database-content h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.database-content p {
+    color: #94a3b8;
+    margin-bottom: 25px;
+}
+
+
+/* =========================
+   VIDEO
+========================= */
+
+.video-link {
+    display: block;
+    text-decoration: none;
+}
+
+.video-thumbnail {
+    position: relative;
+
+    width: 100%;
+    max-width: 600px;
+
+    margin: 0 auto;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+}
+
+.video-thumbnail img {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    transition: transform 0.3s ease;
+}
+
+
+/* Dark overlay */
+
+.video-thumbnail::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0);
+
+    transition: background 0.3s ease;
+}
+
+
+/* Play Button */
+
+.play-button {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 70px;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #0284c7;
+
+    color: white;
+
+    font-size: 28px;
+
+    z-index: 2;
+
+    transition: transform 0.3s ease,
+                background 0.3s ease;
+}
+
+
+/* Hover */
+
+.video-thumbnail:hover img {
+    transform: scale(1.05);
+}
+
+.video-thumbnail:hover::after {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.video-thumbnail:hover .play-button {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: #0369a1;
+}
+
+
+/* =========================
+   WATCH BUTTON
+========================= */
+
+.watch-button {
+    display: inline-block;
+
+    margin-top: 25px;
+
+    padding: 12px 25px;
+
+    background: #0284c7;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+
+    transition: background 0.3s ease,
+                transform 0.2s ease;
+}
+
+.watch-button:hover {
+    background: #0369a1;
+    transform: translateY(-2px);
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    #databases {
+        padding: 50px 15px;
+    }
+
+    .database-card {
+        padding: 20px;
+    }
+
+    .section-header h2 {
+        font-size: 30px;
+    }
+
+    .play-button {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
+
+}
+
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 25px 15px;
+            margin-top: 30px;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        /* =========================
+           RESPONSIVE DESIGN
+        ========================== */
+
+        @media (max-width: 850px) {
+
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            aside {
+                position: static;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-container {
+                justify-content: center;
+            }
+
+            nav a {
+                padding: 12px 10px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 35px 15px;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header p {
+                font-size: 0.95rem;
+            }
+
+            .container {
+                width: 94%;
+                margin: 20px auto;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            nav a {
+                width: 50%;
+                text-align: center;
+                border-bottom: 1px solid #334155;
+            }
+
+            aside {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header>
+        <h1>My Developer Journey</h1>
+        <p>Learning • Building • Documenting • Growing</p>
+    </header>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <nav>
+        <div class="nav-container">
+
+            <a href="#home">Home</a>
+            <a href="#course">Course</a>
+            <a href="#projects">Project Concepts</a>
+            <a href="#databases">Databases</a>
+            <a href="#documentation">Documentation</a>
+            <a href="#about">About Me</a>
+            <a href="#devme">Dev Me</a>
+
+        </div>
+    </nav>
+
+
+    <!-- =========================
+         PAGE CONTENT
+    ========================== -->
+
+    <div class="container">
+
+        <main>
+
+            <!-- HOME -->
+
+            <section id="home">
+
+                <h2>Home</h2>
+
+                <p>
+                   This Course is an introduction to the fundamentals of Computer Science that will provide students with a
+                    for future courses in Computer Science. The Course is a broac survay of discipline through topics that
+                    that allow students to understand that capabilities of computer networks; software and software development; 
+					dataorganization and visualization; and the potential of computing machines 
+                </p>
+
+                <p>
+                    
+                </p>
+
+               
+                </a>
+
+            </section>
+
+
+            <!-- COURSE -->
+
+            <section id="course">
+
+                <h2>Course</h2>
+
+                <p>
+                    This section contains the subjects and technologies
+                    I am currently studying.
+                </p>
+
+                <div class="cards">
+
+                    <div class="card">
+                        <h3>HTML & CSS</h3>
+                        <p>
+                            Learning how to create structured,
+                            responsive and accessible websites.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>JavaScript</h3>
+                        <p>
+                            Learning programming logic, functions,
+                            events, DOM manipulation and web applications.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Programming Logic</h3>
+                        <p>
+                            Studying algorithms, conditions, loops,
+                            variables and problem solving.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Database Development</h3>
+                        <p>
+                            Learning how databases store, organize
+                            and retrieve information.
+                        </p>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PROJECT CONCEPTS -->
+
+            <section id="projects">
+
+    <h2>Project Concepts</h2>
+
+    <p>
+        Here are some projects I can build while developing
+        my programming skills.
+    </p>
+
+    <div class="project-container">
+
+        <!-- Logic Gates Project -->
+        <div class="project-card">
+
+            <h3>Logic Gates</h3>
+
+            <p>
+                Interactive demonstrations of NOT and AND gates,
+                including truth tables and logic operations.
+            </p>
+
+            <a href="logicgates.html" class="btn">
+                View Logic Gates
+            </a>
+
+        </div>
+
+
+        <!-- Interactive Webpage Project -->
+        <div class="project-card">
+
+            <h3>Interactive Webpage</h3>
+
+            <p>
+                An interactive demonstration showing how programs
+                and data move between memory and the CPU.
+            </p>
+
+            <a href="interactivewebpage.html" class="btn">
+                View Webpage
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+            <!-- DATABASES -->
+
+          
+<section id="databases">
+
+    <div class="section-header">
+
+        <h2>Databases</h2>
+
+        <p>
+            This section contains concepts related to
+            database design and management.
+        </p>
+
+    </div>
+
+
+    <div class="database-card">
+
+        <div class="database-content">
+
+            <h3>Database Project</h3>
+
+            <p>
+                Watch my database project presentation
+                by clicking the video thumbnail below.
+            </p>
+
+        </div>
+
+
+        <a
+            href="https://drive.google.com/file/d/1gL6zYcdEBFgzvh-4iPgwfkvESouDlsbX/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="video-link"
+        >
+
+            <div class="video-thumbnail">
+
+                <img
+                    src="database.jpeg"
+                    alt="Database Project Video"
+                >
+
+                <div class="play-button">
+                    ▶
+                </div>
+
+            </div>
+
+        </a>
+
+
+        <a
+            href="https://drive.google.com/file/d/1gL6zYcdEBFgzvh-4iPgwfkvESouDlsbX/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="watch-button"
+        >
+            Watch Video
+        </a>
+
+    </div>
+
+</section>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- DOCUMENTATION -->
+
+            
+             <a href="https://youtube.com" target="_blank" class="video-button">
+             Watch Video
+</a>
+
+            <!-- ABOUT ME -->
+
+            <section id="about">
+
+                <h2>About Me</h2>
+
+                <p>
+                    Hello! My name is <strong>Allen Mendez</strong>.
+                    I am 18 years old enrolled in the FoC class that I am doing this website on
+                   I like to workout and I have been doing it for the past 5 years. This is My website.
+                </p>
+
+                <p>
+
+                </p>
+
+            </section>
+
+
+            <!-- DEV ME -->
+
+            <section id="devme">
+
+                <h2>Dev Me</h2>
+
+                <p>
+                   this part shows everything I have built so far.
+   
+                </p>
+
+                <div class="cards">
+
+                    <div class="card">
+                        <h3>Frontend Development</h3>
+                        <p>
+                            HTML, CSS, JavaScript and responsive
+                            web development.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Backend Development</h3>
+                        <p>
+                            Server-side programming, APIs and
+                            application architecture.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Database Development</h3>
+                        <p>
+                            SQL, relational databases and
+                            database architecture.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Future Goals</h3>
+                        <p>
+                            Build larger applications and develop
+                            real-world software solutions.
+                        </p>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
+
+        
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <p>
+             2026 <strong>UB</strong>.
+            All rights reserved.
+        </p>
+
+        <p>
+            Built with HTML & CSS.
+        </p>
+
+    </footer>
+
+</body>
+</html>

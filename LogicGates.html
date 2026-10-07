@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Computer Systems Final Project</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #020617;
+            border-bottom: 1px solid #334155;
+            padding: 15px 30px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #38bdf8;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+            background:
+                radial-gradient(circle at center, #164e63 0%, #0f172a 55%);
+        }
+
+        .hero-content {
+            max-width: 850px;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 7vw, 75px);
+            color: #f8fafc;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #38bdf8;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+        .hero-button {
+            display: inline-block;
+            padding: 13px 25px;
+            background: #0284c7;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .hero-button:hover {
+            background: #0369a1;
+            transform: translateY(-2px);
+        }
+
+        /* =========================
+           GENERAL SECTIONS
+        ========================= */
+
+        section {
+            padding: 80px 20px;
+        }
+
+        .section-container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-size: 38px;
+            margin-bottom: 10px;
+            color: #f8fafc;
+        }
+
+        .section-title p {
+            color: #94a3b8;
+        }
+
+        .project-number {
+            color: #38bdf8;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* =========================
+           CARDS
+        ========================= */
+
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            color: #38bdf8;
+        }
+
+        /* =========================
+           GATES
+        ========================= */
+
+        .gate-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin: 35px 0;
+            flex-wrap: wrap;
+        }
+
+        .input-box,
+        .output-box {
+            text-align: center;
+        }
+
+        .input-box label,
+        .output-box label {
+            display: block;
+            margin-bottom: 10px;
+            color: #94a3b8;
+        }
+
+        .bit {
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 35px;
+            font-weight: bold;
+            background: #334155;
+            border: 3px solid #64748b;
+            transition: 0.3s;
+        }
+
+        .bit.on {
+            background: #16a34a;
+            border-color: #4ade80;
+            box-shadow: 0 0 25px rgba(74, 222, 128, 0.5);
+        }
+
+        .bit.off {
+            background: #7f1d1d;
+            border-color: #ef4444;
+        }
+
+        .gate-symbol {
+            font-size: 70px;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        .switch {
+            padding: 12px 25px;
+            background: #334155;
+            border: 1px solid #64748b;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: 0.3s;
+        }
+
+        .switch:hover {
+            background: #475569;
+        }
+
+        /* =========================
+           TRUTH TABLE
+        ========================= */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th,
+        td {
+            border: 1px solid #475569;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background: #0f172a;
+            color: #38bdf8;
+        }
+
+        tr.active-row {
+            background: #164e63;
+        }
+
+        /* =========================
+           CONVERTERS
+        ========================= */
+
+        .converter {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #38bdf8;
+        }
+
+        .convert-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #0284c7;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .convert-button:hover {
+            background: #0369a1;
+        }
+
+        .result {
+            background: #020617;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 25px;
+            min-height: 150px;
+        }
+
+        .result-value {
+            color: #38bdf8;
+            font-size: 28px;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        /* =========================
+           MACHINE LANGUAGE
+        ========================= */
+
+        .instruction-box {
+            background: #020617;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: monospace;
+        }
+
+        .machine-output {
+            font-size: 22px;
+            color: #4ade80;
+            word-break: break-all;
+        }
+
+        .binary-display {
+            letter-spacing: 4px;
+            font-size: 20px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #020617;
+            border-top: 1px solid #334155;
+            color: #64748b;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul {
+                justify-content: center;
+            }
+
+            .converter {
+                grid-template-columns: 1fr;
+            }
+
+            .gate-container {
+                gap: 20px;
+            }
+
+            .gate-symbol {
+                font-size: 45px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+    <div class="nav-container">
+
+        <div class="logo">
+            CS FINAL PROJECT
+        </div>
+
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#not-gate">NOT Gate</a></li>
+            <li><a href="#and-gate">AND Gate</a></li>
+            <li><a href="#binary">Binary → Hex</a></li>
+            <li><a href="#ascii">ASCII</a></li>
+            <li><a href="#unicode">Unicode</a></li>
+            <li><a href="#machine">Machine Language</a></li>
+        </ul>
+
+    </div>
+</nav>
+
+
+<!-- =========================
+     HOME
+========================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <p class="project-number">
+            COMPUTER SYSTEMS FINAL PROJECT
+        </p>
+
+        <h1>
+            Digital Logic &
+            <span>Computer Data</span>
+        </h1>
+
+        <p>
+            An interactive demonstration of logic gates,
+            number systems, character encoding, and machine language.
+        </p>
+
+        <a href="#not-gate" class="hero-button">
+            Explore Projects
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PROJECT 1 — NOT GATE
+===================================================== -->
+
+<section id="not-gate">
+
+    <div class="section-container">
+
+        <div class="section-title">
+
+            <div class="project-number">
+                Project 1
+            </div>
+
+            <h2>NOT Gate</h2>
+
+            <p>
+                A NOT gate reverses the input signal.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Interactive NOT Gate</h3>
+
+            <p>
+                Click the switch to change the input between
+                0 and 1.
+            </p>
+
+
+            <div class="gate-container">
+
+                <div class="input-box">
+
+                    <label>INPUT</label>
+
+                    <div id="notInput" class="bit off">
+                        0
+                    </div>
+
+                    <button
+                        class="switch"
+                        onclick="toggleNot()">
+                        Toggle Input
+                    </button>
+
+                </div>
+
+
+                <div class="gate-symbol">
+                    NOT
+                </div>
+
+
+                <div class="output-box">
+
+                    <label>OUTPUT</label>
+
+                    <div id="notOutput" class="bit on">
+                        1
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>NOT Gate Truth Table</h3>
+
+            <table>
+
+                <tr>
+                    <th>Input</th>
+                    <th>Output</th>
+                </tr>
+
+                <tr id="notRow0">
+                    <td>0</td>
+                    <td>1</td>
+                </tr>
+
+                <tr id="notRow1">
+                    <td>1</td>
+                    <td>0</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PROJECT 2 — AND GATE
+===================================================== -->
+
+<section id="and-gate">
+
+    <div class="section-container">
+
+        <div class="section-title">
+
+            <div class="project-number">
+                Project 2
+            </div>
+
+            <h2>AND Gate</h2>
+
+            <p>
+                An AND gate produces 1 only when both inputs are 1.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Interactive AND Gate</h3>
+
+            <div class="gate-container">
+
+                <div class="input-box">
+
+                    <label>INPUT A</label>
+
+                    <div id="andInputA" class="bit off">
+                        0
+                    </div>
+
+                    <button
+                        class="switch"
+                        onclick="toggleAndA()">
+                        Toggle A
+                    </button>
+
+                </div>
+
+
+                <div class="gate-symbol">
+                    AND
+                </div>
+
+
+                <div class="input-box">
+
+                    <label>INPUT B</label>
+
+                    <div id="andInputB" class="bit off">
+                        0
+                    </div>
+
+                    <button
+                        class="switch"
+                        onclick="toggleAndB()">
+                        Toggle B
+                    </button>
+
+                </div>
+
+
+                <div class="gate-symbol">
+                    =
+                </div>
+
+
+                <div class="output-box">
+
+                    <label>OUTPUT</label>
+
+                    <div id="andOutput" class="bit off">
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>AND Gate Truth Table</h3>
+
+            <table>
+
+                <tr>
+                    <th>A</th>
+                    <th>B</th>
+                    <th>Output</th>
+                </tr>
+
+                <tr id="andRow00">
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+
+                <tr id="andRow01">
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                </tr>
+
+                <tr id="andRow10">
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+
+                <tr id="andRow11">
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+
+        <!-- EASY VERSION -->
+
+        <div class="card">
+
+            <h3>AND Gate — Easy Version</h3>
+
+            <p>
+                Select the two inputs and instantly see the output.
+            </p>
+
+            <div class="converter">
+
+                <div class="input-group">
+
+                    <label>Input A</label>
+
+                    <select id="easyA" onchange="easyAnd()">
+
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Input B</label>
+
+                    <select id="easyB" onchange="easyAnd()">
+
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="result">
+
+                <p>AND Output:</p>
+
+                <div id="easyResult" class="result-value">
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PROJECT 3 — BINARY TO HEX
+===================================================== -->
+
+<section id="binary">
+
+    <div class="section-container">
+
+        <div class="section-title">
+
+            <div class="project-number">
+                Project 3
+            </div>
+
+            <h2>Binary → Hexadecimal Converter</h2>
+
+            <p>
+                Convert binary numbers into hexadecimal.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="converter">
+
+                <div>
+
+                    <div class="input-group">
+
+                        <label>
+                            Enter Binary Number
+                        </label>
+
+                        <input
+                            id="binaryInput"
+                            type="text"
+                            placeholder="Example: 10110101">
+
+                    </div>
+
+                    <button
+                        class="convert-button"
+                        onclick="convertBinary()">
+
+                        Convert to Hexadecimal
+
+                    </button>
+
+                </div>
+
+
+                <div class="result">
+
+                    <p>Hexadecimal:</p>
+
+                    <div
+                        id="hexResult"
+                        class="result-value">
+
+                        --
+
+                    </div>
+
+                    <br>
+
+                    <p>Decimal:</p>
+
+                    <div
+                        id="decimalResult"
+                        class="result-value">
+
+                        --
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>How it works</h3>
+
+            <p>
+                Binary uses only 0 and 1.
+                Hexadecimal uses the digits 0–9 and letters A–F.
+                Every group of four binary digits represents one
+                hexadecimal digit.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PROJECT 4 — ASCII
+===================================================== -->
+
+<section id="ascii">
+
+    <div class="section-container">
+
+        <div class="section-title">
+
+            <div class="project-number">
+                Project 4
+            </div>
+
+            <h2>ASCII Converter</h2>
+
+            <p>
+                Convert characters into ASCII values and ASCII
+                values back into characters.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Character → ASCII</h3>
+
+            <div class="converter">
+
+                <div>
+
+                    <div class="input-group">
+
+                        <label>
+                            Enter a Character
+                        </label>
+
+                        <input
+                            id="asciiCharacter"
+                            type="text"
+                            maxlength="1"
+                            placeholder="A">
+
+                    </div>
+
+                    <button
+                        class="convert-button"
+                        onclick="characterToASCII()">
+
+                        Convert
+
+                    </button>
+
+                </div>
+
+
+                <div class="result">
+
+                    <p>ASCII Decimal:</p>
+
+                    <div
+                        id="asciiDecimal"
+                        class="result-value">
+
+                        --
+
+                    </div>
+
+                    <br>
+
+                    <p>Binary:</p>
+
+                    <div
+                        id="asciiBinary"
+                        class="result-value">
+
+                        --
+
+                    </div>
+
+                    <br>
+
+                    <p>Hexadecimal:</p>
+
+                    <div
+                        id="asciiHex"
+                        class="result-value">
+
+                        --
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>ASCII → Character</h3>
+
+            <div class="converter">
+
+                <div>
+
+                    <div class="input-group">
+
+                        <label>
+                            Enter ASCII Number
+                        </label>
+
+                        <input
+                            id="asciiNumber"
+                            type="number"
+                            min="0"
+                            max="127"
+                            placeholder="65">
+
+                    </div>
+
+                    <button
+                        class="convert-button"
+                        onclick="asciiToCharacter()">
+
+                        Convert
+
+                    </button>
+
+                </div>
+
+
+                <div class="result">
+
+                    <p>Character:</p>
+
+                    <div
+                        id="asciiCharacterResult"
+                        class="result-value">
+
+                        --
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     UNICODE
+===================================================== -->
+
+<section id="unicode">
+
+    <div class="section-container">
+
+        <div class="section-title">
+
+            <div class="project-number">
+                Project 4 — Unicode
+            </div>
+
+            <h2>Unicode Converter</h2>
+
+            <p>
+                Convert characters into Unicode code points.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Character → Unicode</h3>
+
+            <div class="converter">
+
+                <div>
+
+                    <div class="input-group">
+
+                        <label>
+                            Enter a Character
+                        </label>
+
+                        <input
+                            id="unicodeCharacter"
+                            type="text"
+                            maxlength="2"
+                            placeholder="A">
+
+                    </div>
+
+                    <button
+                        class="convert-button"
+                        onclick="convertUnicode()">
+
+                        Convert
+
+                    </button>
+
+                </div>
+
+
+                <div class="result">
+
+                    <p>Unicode:</p>
+
+                    <div
+                        id="unicodeResult"
+                        class="result-value">
+
+                        --
+
+                    </div>
+
+                    <br>
+
+                    <p>Decimal:</p>
+
+                    <div
+                        id="unicodeDecimal"
+                        class="result-value">
+
+                        --
+
+                    </div>
+
+                    <br>
+
+                    <p>Hexadecimal:</p>
+
+                    <div
+                        id="unicodeHex"
+                        class="result-value">
+
+                        --
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PROJECT 5 — MACHINE LANGUAGE
+===================================================== -->
+
+<section id="machine">
+
+    <div class="section-container">
+
+        <div class="section-title">
+
+            <div class="project-number">
+                Project 5
+            </div>
+
+            <h2>Machine Language Instructions</h2>
+
+            <p>
+                Convert simple instructions into binary machine code.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Instruction Converter</h3>
+
+            <p>
+                Select an instruction and register to generate
+                a simple machine-language representation.
+            </p>
+
+
+            <div class="input-group">
+
+                <label>
+                    Instruction
+                </label>
+
+                <select id="instruction">
+
+                    <option value="0001">
+                        LOAD
+                    </option>
+
+                    <option value="0010">
+                        STORE
+                    </option>
+
+                    <option value="0011">
+                        ADD
+                    </option>
+
+                    <option value="0100">
+                        SUBTRACT
+                    </option>
+
+                    <option value="0101">
+                        JUMP
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Register
+                </label>
+
+                <select id="register">
+
+                    <option value="0000">
+                        R0
+                    </option>
+
+                    <option value="0001">
+                        R1
+                    </option>
+
+                    <option value="0010">
+                        R2
+                    </option>
+
+                    <option value="0011">
+                        R3
+                    </option>
+
+                    <option value="0100">
+                        R4
+                    </option>
+
+                    <option value="0101">
+                        R5
+                    </option>
+
+                    <option value="0110">
+                        R6
+                    </option>
+
+                    <option value="0111">
+                        R7
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Address / Value
+                </label>
+
+                <input
+                    id="address"
+                    type="number"
+                    min="0"
+                    max="255"
+                    value="10">
+
+            </div>
+
+
+            <button
+                class="convert-button"
+                onclick="generateMachineCode()">
+
+                Generate Machine Code
+
+            </button>
+
+
+            <div class="instruction-box">
+
+                <p>
+                    Instruction:
+                </p>
+
+                <div
+                    id="instructionName"
+                    class="machine-output">
+
+                    --
+
+                </div>
+
+                <br>
+
+                <p>
+                    Binary:
+                </p>
+
+                <div
+                    id="machineBinary"
+                    class="machine-output binary-display">
+
+                    --
+
+                </div>
+
+                <br>
+
+                <p>
+                    Hexadecimal:
+                </p>
+
+                <div
+                    id="machineHex"
+                    class="machine-output">
+
+                    --
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Machine Language Explanation</h3>
+
+            <p>
+                Machine language is the lowest-level language
+                understood directly by a computer's processor.
+                Instructions are represented using binary digits.
+            </p>
+
+            <br>
+
+            <p>
+                In this demonstration, the instruction contains
+                an operation code, a register, and an address/value.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <p>
+        Computer Systems Final Project
+    </p>
+
+    <p>
+        HTML • CSS • JavaScript • GitHub
+    </p>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+    /* ==========================================
+       NOT GATE
+    ========================================== */
+
+    let notState = 0;
+
+    function toggleNot() {
+
+        notState = notState === 0 ? 1 : 0;
+
+        const input = document.getElementById("notInput");
+        const output = document.getElementById("notOutput");
+
+        input.textContent = notState;
+
+        const result = notState === 0 ? 1 : 0;
+
+        output.textContent = result;
+
+        input.className =
+            "bit " + (notState === 1 ? "on" : "off");
+
+        output.className =
+            "bit " + (result === 1 ? "on" : "off");
+
+    }
+
+
+    /* ==========================================
+       AND GATE
+    ========================================== */
+
+    let andA = 0;
+    let andB = 0;
+
+    function toggleAndA() {
+
+        andA = andA === 0 ? 1 : 0;
+
+        updateAndGate();
+
+    }
+
+
+    function toggleAndB() {
+
+        andB = andB === 0 ? 1 : 0;
+
+        updateAndGate();
+
+    }
+
+
+    function updateAndGate() {
+
+        const inputA =
+            document.getElementById("andInputA");
+
+        const inputB =
+            document.getElementById("andInputB");
+
+        const output =
+            document.getElementById("andOutput");
+
+        inputA.textContent = andA;
+        inputB.textContent = andB;
+
+        const result = andA && andB ? 1 : 0;
+
+        output.textContent = result;
+
+        inputA.className =
+            "bit " + (andA ? "on" : "off");
+
+        inputB.className =
+            "bit " + (andB ? "on" : "off");
+
+        output.className =
+            "bit " + (result ? "on" : "off");
+
+        highlightAndRow();
+
+    }
+
+
+    function highlightAndRow() {
+
+        document.querySelectorAll(
+            "#and-gate table tr"
+        ).forEach(row => {
+
+            row.classList.remove("active-row");
+
+        });
+
+
+        const rowID =
+            "andRow" + andA + andB;
+
+        document
+            .getElementById(rowID)
+            .classList.add("active-row");
+
+    }
+
+
+    /* ==========================================
+       EASY AND GATE
+    ========================================== */
+
+    function easyAnd() {
+
+        const a =
+            Number(document.getElementById("easyA").value);
+
+        const b =
+            Number(document.getElementById("easyB").value);
+
+        const result = a && b ? 1 : 0;
+
+        document.getElementById(
+            "easyResult"
+        ).textContent = result;
+
+    }
+
+
+    /* ==========================================
+       BINARY TO HEX
+    ========================================== */
+
+    function convertBinary() {
+
+        const input =
+            document.getElementById("binaryInput")
+            .value.trim();
+
+
+        if (!/^[01]+$/.test(input)) {
+
+            alert(
+                "Please enter a valid binary number using only 0 and 1."
+            );
+
+            return;
+
+        }
+
+
+        const decimal =
+            parseInt(input, 2);
+
+        const hexadecimal =
+            decimal.toString(16).toUpperCase();
+
+
+        document.getElementById(
+            "hexResult"
+        ).textContent = "0x" + hexadecimal;
+
+
+        document.getElementById(
+            "decimalResult"
+        ).textContent = decimal;
+
+    }
+
+
+    /* ==========================================
+       ASCII CHARACTER → NUMBER
+    ========================================== */
+
+    function characterToASCII() {
+
+        const character =
+            document.getElementById(
+                "asciiCharacter"
+            ).value;
+
+
+        if (character.length !== 1) {
+
+            alert(
+                "Please enter exactly one character."
+            );
+
+            return;
+
+        }
+
+
+        const decimal =
+            character.charCodeAt(0);
+
+        const binary =
+            decimal.toString(2);
+
+        const hexadecimal =
+            decimal.toString(16).toUpperCase();
+
+
+        document.getElementById(
+            "asciiDecimal"
+        ).textContent = decimal;
+
+
+        document.getElementById(
+            "asciiBinary"
+        ).textContent = binary;
+
+
+        document.getElementById(
+            "asciiHex"
+        ).textContent = "0x" + hexadecimal;
+
+    }
+
+
+    /* ==========================================
+       ASCII NUMBER → CHARACTER
+    ========================================== */
+
+    function asciiToCharacter() {
+
+        const number =
+            Number(
+                document.getElementById(
+                    "asciiNumber"
+                ).value
+            );
+
+
+        if (
+            number < 0 ||
+            number > 127 ||
+            !Number.isInteger(number)
+        ) {
+
+            alert(
+                "ASCII values must be integers from 0 to 127."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "asciiCharacterResult"
+        ).textContent =
+            String.fromCharCode(number);
+
+    }
+
+
+    /* ==========================================
+       UNICODE
+    ========================================== */
+
+    function convertUnicode() {
+
+        const character =
+            document.getElementById(
+                "unicodeCharacter"
+            ).value;
+
+
+        if (!character) {
+
+            alert(
+                "Please enter a character."
+            );
+
+            return;
+
+        }
+
+
+        const codePoint =
+            character.codePointAt(0);
+
+
+        const unicode =
+            "U+" +
+            codePoint
+                .toString(16)
+                .toUpperCase()
+                .padStart(4, "0");
+
+
+        const decimal =
+            codePoint;
+
+
+        const hexadecimal =
+            codePoint
+                .toString(16)
+                .toUpperCase();
+
+
+        document.getElementById(
+            "unicodeResult"
+        ).textContent = unicode;
+
+
+        document.getElementById(
+            "unicodeDecimal"
+        ).textContent = decimal;
+
+
+        document.getElementById(
+            "unicodeHex"
+        ).textContent = "0x" + hexadecimal;
+
+    }
+
+
+    /* ==========================================
+       MACHINE LANGUAGE
+    ========================================== */
+
+    function generateMachineCode() {
+
+        const instruction =
+            document.getElementById(
+                "instruction"
+            ).value;
+
+
+        const register =
+            document.getElementById(
+                "register"
+            ).value;
+
+
+        let address =
+            Number(
+                document.getElementById(
+                    "address"
+                ).value
+            );
+
+
+        if (
+            address < 0 ||
+            address > 255 ||
+            !Number.isInteger(address)
+        ) {
+
+            alert(
+                "Address/value must be between 0 and 255."
+            );
+
+            return;
+
+        }
+
+
+        const addressBinary =
+            address
+                .toString(2)
+                .padStart(8, "0");
+
+
+        /*
+            4-bit opcode
+            +
+            4-bit register
+            +
+            8-bit address
+
+            Total = 16 bits
+        */
+
+        const machineBinary =
+            instruction +
+            register +
+            addressBinary;
+
+
+        const machineDecimal =
+            parseInt(machineBinary, 2);
+
+
+        const machineHex =
+            machineDecimal
+                .toString(16)
+                .toUpperCase()
+                .padStart(4, "0");
+
+
+        const instructionNames = {
+
+            "0001": "LOAD",
+
+            "0010": "STORE",
+
+            "0011": "ADD",
+
+            "0100": "SUBTRACT",
+
+            "0101": "JUMP"
+
+        };
+
+
+        document.getElementById(
+            "instructionName"
+        ).textContent =
+            instructionNames[instruction] +
+            " " +
+            document.getElementById(
+                "register"
+            ).selectedOptions[0].text;
+
+
+        document.getElementById(
+            "machineBinary"
+        ).textContent =
+            machineBinary;
+
+
+        document.getElementById(
+            "machineHex"
+        ).textContent =
+            "0x" + machineHex;
+
+    }
+
+
+    /* ==========================================
+       INITIALIZE
+    ========================================== */
+
+    updateAndGate();
+    easyAnd();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPU & Memory Interactive Demo</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0b1020;
+    color: #eef2ff;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1200px; margin: auto; padding: 28px 20px 40px; }
+  h1 { text-align:center; margin:0 0 8px; font-size: clamp(28px, 5vw, 46px); }
+  .subtitle { text-align:center; color:#aab5d6; margin-bottom:25px; }
+  .controls {
+    display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+    margin-bottom:22px;
+  }
+  button {
+    border:0; border-radius:10px; padding:11px 18px; cursor:pointer;
+    background:#263354; color:white; font-weight:700; transition:.2s;
+  }
+  button:hover { transform:translateY(-1px); background:#34456f; }
+  button.primary { background:#4f7cff; }
+  button.active { outline:2px solid #9eb6ff; }
+  .stage {
+    position:relative; min-height:500px; border:1px solid #293453;
+    border-radius:20px; background:linear-gradient(145deg,#11182b,#0d1324);
+    overflow:hidden; padding:28px;
+  }
+  .memory {
+    position:absolute; left:4%; top:13%; width:24%; min-width:180px;
+    border:2px solid #4d78ff; border-radius:16px; padding:15px;
+    background:#101b36; box-shadow:0 0 25px #315fd333;
+  }
+  .cpu {
+    position:absolute; left:38%; top:10%; width:25%; min-width:230px;
+    border:2px solid #9a6bff; border-radius:20px; padding:18px;
+    background:#19122e; box-shadow:0 0 35px #8d5cff33;
+  }
+  .output {
+    position:absolute; right:4%; top:13%; width:24%; min-width:180px;
+    border:2px solid #32c98a; border-radius:16px; padding:15px;
+    background:#0f2a25; box-shadow:0 0 25px #32c98a22;
+  }
+  .box-title { font-size:20px; font-weight:800; margin-bottom:12px; }
+  .chip {
+    border:1px solid #594a7f; border-radius:12px; padding:12px; margin-top:10px;
+    background:#120e22;
+  }
+  .chip strong { display:block; margin-bottom:5px; }
+  .register {
+    display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px;
+  }
+  .reg {
+    background:#222039; border:1px solid #403a61; padding:9px; border-radius:8px;
+    font-size:13px;
+  }
+  .reg span { color:#9da8c8; display:block; }
+  .memrow {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:8px 10px; margin:6px 0; border-radius:8px;
+    background:#172342; border:1px solid #293d6d; font-family:monospace;
+  }
+  .memrow.highlight { background:#4c3b17; border-color:#ffca52; }
+  .memrow.changed { background:#103d2f; border-color:#32c98a; }
+  .arrow {
+    position:absolute; top:40%; height:4px; background:#53678f;
+    width:10%; z-index:1; transition:.3s;
+  }
+  .arrow::after {
+    content:""; position:absolute; right:-2px; top:-6px;
+    border-left:13px solid #53678f; border-top:8px solid transparent;
+    border-bottom:8px solid transparent;
+  }
+  .arrow.left { left:29%; }
+  .arrow.right { left:63%; }
+  .arrow.left.reverse { transform:rotate(180deg); transform-origin:center; }
+  .arrow.right.reverse { transform:rotate(180deg); transform-origin:center; }
+  .packet {
+    position:absolute; width:16px; height:16px; border-radius:50%;
+    background:#ffd45c; box-shadow:0 0 18px #ffd45c;
+    display:none; z-index:5;
+  }
+  .packet.go-right { display:block; animation: rightMove 1.1s ease-in-out forwards; }
+  .packet.go-left { display:block; animation: leftMove 1.1s ease-in-out forwards; }
+  @keyframes rightMove { from{left:30%;top:40%;} to{left:62%;top:40%;} }
+  @keyframes leftMove { from{left:62%;top:40%;} to{left:30%;top:40%;} }
+  .status {
+    margin-top:18px; padding:16px 18px; border-radius:14px;
+    background:#151e35; border:1px solid #2b3a61; text-align:center;
+  }
+  .status b { color:#79a0ff; }
+  .timeline {
+    display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-top:18px;
+  }
+  .step {
+    padding:7px 12px; border-radius:999px; background:#1a243d; color:#8e9abd;
+    font-size:13px; border:1px solid #2b3a61;
+  }
+  .step.current { color:white; background:#3a4f88; border-color:#7d9fff; }
+  .explain {
+    margin-top:22px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px;
+  }
+  .card { padding:15px; border-radius:13px; background:#121a2d; border:1px solid #283653; }
+  .card h3 { margin:0 0 7px; font-size:16px; }
+  .card p { margin:0; color:#aeb8d1; font-size:14px; line-height:1.45; }
+  .legend { text-align:center; color:#8f9bb9; margin-top:16px; font-size:13px; }
+  @media(max-width:850px){
+    .stage { min-height:850px; }
+    .memory,.cpu,.output { position:absolute; width:88%; left:6%; min-width:0; }
+    .memory { top:5%; }
+    .cpu { top:34%; }
+    .output { top:65%; }
+    .arrow { display:none; }
+    .packet { display:none !important; }
+    .explain { grid-template-columns:1fr 1fr; }
+  }
+  @media(max-width:520px){ .explain{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>How Data Moves Through a CPU</h1>
+  <div class="subtitle">Interactive demonstration: Program & Data → RAM → CPU → RAM</div>
+
+  <div class="controls">
+    <button class="primary" onclick="runCycle()">▶ Run Full Cycle</button>
+    <button onclick="stepCycle()">Step Forward</button>
+    <button onclick="resetDemo()">↺ Reset</button>
+    <button onclick="toggleAuto()" id="autoBtn">Auto: Off</button>
+  </div>
+
+  <div class="stage">
+    <div class="memory">
+      <div class="box-title">🧠 Main Memory (RAM)</div>
+      <div class="memrow" id="instruction"><span>Instruction</span><b>ADD R1, R2</b></div>
+      <div class="memrow" id="data1"><span>R1</span><b>5</b></div>
+      <div class="memrow" id="data2"><span>R2</span><b>7</b></div>
+      <div class="memrow" id="result"><span>Result</span><b id="resultValue">—</b></div>
+    </div>
+
+    <div class="cpu">
+      <div class="box-title">⚙️ Central Processing Unit</div>
+      <div class="chip"><strong>Control Unit</strong><span id="controlText">Waiting...</span></div>
+      <div class="chip"><strong>ALU</strong><span id="aluText">Ready for calculation</span></div>
+      <div class="register">
+        <div class="reg"><span>Program Counter</span><b id="pc">100</b></div>
+        <div class="reg"><span>Instruction Reg.</span><b id="ir">—</b></div>
+        <div class="reg"><span>Register R1</span><b id="r1">—</b></div>
+        <div class="reg"><span>Register R2</span><b id="r2">—</b></div>
+      </div>
+    </div>
+
+    <div class="output">
+      <div class="box-title">💾 Stored Result</div>
+      <div class="chip">
+        <strong>Memory Address 103</strong>
+        <div id="stored">Waiting for result...</div>
+      </div>
+      <div class="chip">
+        <strong>What happened?</strong>
+        <div id="outputText">The CPU has not processed the program yet.</div>
+      </div>
+    </div>
+
+    <div class="arrow left" id="arrowLeft"></div>
+    <div class="arrow right" id="arrowRight"></div>
+    <div class="packet" id="packet"></div>
+  </div>
+
+  <div class="status">Current operation: <b id="status">Ready — press Run Full Cycle</b></div>
+  <div class="timeline" id="timeline">
+    <div class="step current">1. Fetch</div>
+    <div class="step">2. Decode</div>
+    <div class="step">3. Load Data</div>
+    <div class="step">4. Execute</div>
+    <div class="step">5. Store</div>
+  </div>
+
+  <div class="explain">
+    <div class="card"><h3>1. Fetch</h3><p>The CPU uses the Program Counter to find the next instruction in RAM and loads it into the Instruction Register.</p></div>
+    <div class="card"><h3>2. Decode</h3><p>The Control Unit interprets the instruction and determines what operation and data are required.</p></div>
+    <div class="card"><h3>3. Load Data</h3><p>The required values are transferred from RAM into CPU registers.</p></div>
+    <div class="card"><h3>4. Execute → 5. Store</h3><p>The ALU performs the calculation. The result is then sent back to memory for storage.</p></div>
+  </div>
+  <div class="legend">Example: ADD R1, R2 → 5 + 7 = 12</div>
+</div>
+
+<script>
+const steps = ["fetch","decode","load","execute","store"];
+let current = 0;
+let timer = null;
+
+function setStep(i){
+  current = i;
+  document.querySelectorAll(".step").forEach((x,n)=>x.classList.toggle("current",n===i));
+}
+
+function clearHighlights(){
+  document.querySelectorAll(".memrow").forEach(x=>x.classList.remove("highlight","changed"));
+}
+
+function packet(direction){
+  const p=document.getElementById("packet");
+  p.className="packet "+(direction==="right"?"go-right":"go-left");
+  setTimeout(()=>p.className="packet",1150);
+}
+
+function doStep(){
+  clearHighlights();
+  const status=document.getElementById("status");
+  const control=document.getElementById("controlText");
+  const alu=document.getElementById("aluText");
+
+  if(current===0){
+    setStep(0); document.getElementById("instruction").classList.add("highlight");
+    document.getElementById("ir").textContent="ADD R1, R2";
+    control.textContent="Fetching instruction from RAM";
+    alu.textContent="Waiting";
+    status.innerHTML="<b>FETCH:</b> Instruction loaded from memory into the CPU.";
+    packet("right");
+  } else if(current===1){
+    setStep(1);
+    control.textContent="Decoding ADD instruction";
+    alu.textContent="Operation = addition";
+    status.innerHTML="<b>DECODE:</b> Control Unit understands that the ALU must add R1 and R2.";
+  } else if(current===2){
+    setStep(2);
+    document.getElementById("data1").classList.add("highlight");
+    document.getElementById("data2").classList.add("highlight");
+    document.getElementById("r1").textContent="5";
+    document.getElementById("r2").textContent="7";
+    control.textContent="Loading operands";
+    alu.textContent="R1 = 5, R2 = 7";
+    status.innerHTML="<b>LOAD DATA:</b> Values 5 and 7 move from RAM into CPU registers.";
+    packet("right");
+  } else if(current===3){
+    setStep(3);
+    document.getElementById("r1").textContent="5";
+    document.getElementById("r2").textContent="7";
+    control.textContent="Execute";
+    alu.textContent="5 + 7 = 12";
+    status.innerHTML="<b>EXECUTE:</b> The ALU operates on the data and produces 12.";
+  } else if(current===4){
+    setStep(4);
+    document.getElementById("result").classList.add("changed");
+    document.getElementById("resultValue").textContent="12";
+    document.getElementById("stored").textContent="12";
+    document.getElementById("outputText").textContent="The result has been written back to RAM.";
+    control.textContent="Store result";
+    alu.textContent="Result = 12";
+    status.innerHTML="<b>STORE:</b> The CPU sends the result back to memory.";
+    packet("left");
+  }
+
+  current++;
+  if(current>4){
+    current=0;
+    document.getElementById("pc").textContent="101";
+  }
+}
+
+function stepCycle(){ doStep(); }
+
+function runCycle(){
+  resetDemo();
+  let i=0;
+  timer=setInterval(()=>{
+    doStep(); i++;
+    if(i>=5){ clearInterval(timer); timer=null; current=0; setStep(4); }
+  },1300);
+}
+
+function toggleAuto(){
+  const b=document.getElementById("autoBtn");
+  if(timer){ clearInterval(timer); timer=null; b.textContent="Auto: Off"; }
+  else {
+    b.textContent="Auto: On";
+    timer=setInterval(doStep,1300);
+  }
+}
+
+function resetDemo(){
+  if(timer){clearInterval(timer);timer=null;}
+  current=0; setStep(0); clearHighlights();
+  document.getElementById("instruction").classList.remove("highlight");
+  document.getElementById("resultValue").textContent="—";
+  document.getElementById("stored").textContent="Waiting for result...";
+  document.getElementById("outputText").textContent="The CPU has not processed the program yet.";
+  document.getElementById("controlText").textContent="Waiting...";
+  document.getElementById("aluText").textContent="Ready for calculation";
+  document.getElementById("pc").textContent="100";
+  document.getElementById("ir").textContent="—";
+  document.getElementById("r1").textContent="—";
+  document.getElementById("r2").textContent="—";
+  document.getElementById("status").innerHTML="Ready — press <b>Run Full Cycle</b>";
+  document.getElementById("autoBtn").textContent="Auto: Off";
+}
+</script>
+</body>
+</html>
